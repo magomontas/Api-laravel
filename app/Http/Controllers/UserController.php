@@ -78,22 +78,27 @@ class UserController extends Controller
         //Cifrar la contraseña de nos llega
         $pwd = hash('sha256', $password);
 
-        if (!is_null($email) && !is_null($password) && $getToken== null || $getToken == 'false'){
-            $singup = $jwtAuth->sigup($email,$pwd);
+        if (!is_null($email) && !is_null($password) && $getToken == null || $getToken == 'false') {
+            $singup = $jwtAuth->sigup($email, $pwd);
 
-        }elseif ($getToken !=null){
-            $singup = $jwtAuth->sigup($email,$pwd,$getToken);
+        } elseif ($getToken != null) {
+            $singup = $jwtAuth->sigup($email, $pwd, $getToken);
 
-        }else{
+        } else {
             $singup = array(
-                'status'=> 'error',
-                'message'=>'Envia tus datos por post'
+                'status' => 'error',
+                'message' => 'Envia tus datos por post'
             );
         }
-        return response()->json($singup,200);
+        return response()->json($singup, 200);
 
     }
 
+
+    public function showAll()
+    {
+        return response()->json(['datos' => User::all(), 200]);
+    }
 
     /**
      * Display a listing of the resource.
@@ -102,7 +107,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        echo "Desde el index de User Controller"; die();
+
     }
 
     /**
@@ -118,7 +123,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -129,18 +134,22 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        if (!$user) {
+           return response()->json(['mensaje' => 'No se encontro al Usuario'], 404);
+        }
+        return response()->json(['datos' => $user, 200]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -151,8 +160,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -163,7 +172,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

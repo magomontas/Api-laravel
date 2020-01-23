@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\JwtAuth;
-use App\Materia;
 use App\User;
 use Illuminate\Http\Request;
 
-class MateriaController extends Controller
+class UserMateriaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $materia = Materia::all();
-        if (!$materia) {
-            return response()->json(['mensaje' => 'No se encontraron las Materias'], 404);
+        //el $id es del User
+        $user = User::find($id);
+        $materias = $user->materiaUser;
+
+        if (!$user){
+            return response()->json(['mensaje'=>'No se encuentra el Usuario','codigo'=>404],404);
         }
-        return response()->json(['datos' => $materia, 200]);
+        return response()->json(['datos'=>$materias],202);
     }
 
     /**
@@ -52,11 +53,7 @@ class MateriaController extends Controller
      */
     public function show($id)
     {
-        $materia = User::find($id);
-        if (!$materia) {
-            return response()->json(['mensaje' => 'No se encontró ninguna Materia'], 404);
-        }
-        return response()->json(['datos' => $materia, 200]);
+        //
     }
 
     /**

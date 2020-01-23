@@ -10,14 +10,20 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public function materiaUser(){
+         return $this->hasMany('App\Materia');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','lastname','role'
     ];
+
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -25,7 +31,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+         'remember_token', 'created_at','updated_at'
+//        'password','password', 'remember_token',
     ];
 
     /**

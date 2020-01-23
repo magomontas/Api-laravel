@@ -18,4 +18,8 @@ Route::get('/', function () {
 Route::post('/api/register', 'UserController@register');
 Route::post('/api/login', 'UserController@login');
 Route::post('/api/test', 'UserController@index');
+Route::get('/api/showAll', 'UserController@showAll');
+
 Route::resource('/api/materias', 'MateriaController');
+Route::resource('/api/user', 'UserController');
+Route::resource('/api/user.materias', 'UserMateriaController');
